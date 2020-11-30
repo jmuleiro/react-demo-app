@@ -1,25 +1,50 @@
-import logo from './logo.svg';
 import './App.css';
+import 'http';
+import React from 'react';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const http = require('http');
+
+class App extends React.Component{
+  constructor(props){
+    super(props);
+    this.state = {
+      getmsg: ''
+    };
+  }
+
+  getExpress(){
+    let chunks = [];
+    const httpOptions = {
+      hostname: 'localhost',
+      port: 3000,
+      path: '/',
+      method: 'GET'
+    };
+    const req = http.request(httpOptions, (res) =>{
+      
+      res.on('data', (chunk) =>{
+        chunks.push(chunk);
+      });
+      
+      res.on('end', ()=>{
+        chunks = chunks.join();
+        this.setState({getmsg:chunks});
+        console.log(chunks);
+      });
+    });
+    req.method = 'GET';
+    req.end();
+    
+  }
+
+  render(){
+    return (
+      <div className="App">
+        <button onClick={() => this.getExpress()}>Enviar</button> <br/>
+        {this.state.getmsg}
+      </div>
+    );
+  }
 }
 
 export default App;
