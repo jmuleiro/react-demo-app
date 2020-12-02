@@ -13,4 +13,4 @@ COPY . .
 
 EXPOSE 3001
 
-CMD ["/app/npm", "start"]
+CMD ["npm", "start"]
