@@ -4,6 +4,31 @@ import React from 'react';
 
 const http = require('http');
 
+function getExternalIp(){
+  return '35.225.6.46';
+}
+
+function requestExpress(opt){
+  let chunks = [];
+  const req = http.request(opt, (res) =>{
+    res.on('data', (chunk) =>{
+      chunks.push(chunk);
+    });
+    
+    res.on('end', ()=>{
+      chunks = chunks.join();
+      return chunks;
+    });
+
+    res.on('error', (err) => {
+      if (err)
+        throw err;
+    });
+  });
+  req.method = 'GET';
+  req.end();
+}
+
 class App extends React.Component{
   constructor(props){
     super(props);
@@ -13,27 +38,23 @@ class App extends React.Component{
   }
 
   getExpress(){
-    let chunks = [];
+    let msg;
     const httpOptions = {
       hostname: 'localhost',
       port: 3000,
       path: '/',
       method: 'GET'
     };
-    const req = http.request(httpOptions, (res) =>{
-      
-      res.on('data', (chunk) =>{
-        chunks.push(chunk);
-      });
-      
-      res.on('end', ()=>{
-        chunks = chunks.join();
-        this.setState({getmsg:chunks});
-        console.log(chunks);
-      });
-    });
-    req.method = 'GET';
-    req.end();
+    try {
+      msg = getExpress(httpOptions);
+      this.setState({getmsg:msg});
+    } catch (err) {
+      if (httpOptions.hostname = 'localhost'){
+        let ipExt = getExternalIp();
+        httpOptions.hostname = ipExt;
+        msg = getExpress(httpOptions);
+      }
+    }
     
   }
 
