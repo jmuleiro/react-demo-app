@@ -46,13 +46,13 @@ class App extends React.Component{
       method: 'GET'
     };
     try {
-      msg = getExpress(httpOptions);
+      msg = requestExpress(httpOptions);
       this.setState({getmsg:msg});
     } catch (err) {
       if (httpOptions.hostname = 'localhost'){
         let ipExt = getExternalIp();
         httpOptions.hostname = ipExt;
-        msg = getExpress(httpOptions);
+        msg = requestExpress(httpOptions);
       }
     }
     
