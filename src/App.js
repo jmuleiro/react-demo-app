@@ -15,7 +15,7 @@ class App extends React.Component{
   getExpress(){
     let chunks = [];
     const httpOptions = {
-      hostname: 'http://localhost',
+      hostname: 'localhost',
       port: 3000,
       path: '/',
       method: 'GET'
